@@ -2,7 +2,7 @@ import c4d
 from c4d import gui
 #Welcome to the world of Python
 
-
+#!! This only works on the channels that have changing animation. So i.e. if only the xchannel is animated but the target object is in a different position then it will only copy across the x animation
 def main():
     
     gui.MessageDialog('Hello World!')
@@ -11,14 +11,24 @@ def main():
     
     source = obj[0]
     target = obj[1]
-    
-    if activeObject != None:
-            
+
+    print "Source: %s \n" %source
+    print "Target: %s \n" %target
+
+    if obj != None:
+
     # look if there is already a track
-      track = obj.FindCTrack(c4d.ID_BASEOBJECT_REL_POSITION)
+      track = source.FindCTrack(c4d.ID_BASEOBJECT_REL_POSITION)
       
+      print "Track: %s \n" %track
+
       # if not create the track
       if track == None:
          print "Sorry - no track found \n"
-         #track=c4d.CTrack(activeObject, c4d.DescID(c4d.DescLevel(c4d.ID_BASEOBJECT_REL_POSITION, c4d.DTYPE_VECTOR, 0), c4d.DescLevel(c4d.VECTOR_X, c4d.DTYPE_REAL, 0)))
-         #activeObject.InsertTrackSorted(track)
+      
+      curve = track.GetCurve()
+
+      target.InsertTrackSorted(track.GetClone())
+      
+if __name__=='__main__':
+    main()
